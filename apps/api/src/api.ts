@@ -6,7 +6,7 @@ export const getActiveTier = async (address: string) => {
   const res = await neynar.fetchBulkUsersByEthereumAddress([address]);
 
   const meta = {
-    "x-dune-api-key": "REDACTED_DUNE_API_KEY" || "",
+    "x-dune-api-key": process.env.DUNE_API_KEY || "",
   };
   const header = new Headers(meta);
   try {
