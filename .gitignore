@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+
+# env files (only *.sample files are committed)
+.env
+.env.*
+!.env.sample
+
+# build output
+.next/
+.vercel/
+.ponder/
+dist/
+*.tsbuildinfo

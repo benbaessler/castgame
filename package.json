@@ -1,0 +1,5 @@
+{
+  "name": "castgame",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*", "scripts"]
+}
