@@ -1,0 +1,23 @@
+{
+  "name": "@castgame/shared",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./abis": "./src/abis.ts",
+    "./constants": "./src/constants.ts",
+    "./indexer": "./src/indexer.ts",
+    "./pricing": "./src/pricing.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "viem": "^2.19.9"
+  },
+  "devDependencies": {
+    "prisma": "^5.18.0",
+    "typescript": "^5.3.3"
+  }
+}

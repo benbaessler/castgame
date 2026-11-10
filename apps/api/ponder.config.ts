@@ -1,7 +1,8 @@
 import { createConfig } from "@ponder/core";
 import { http } from "viem";
 
-import { GameAbi } from "./abis/GameAbi";
+import { gameAbi } from "@castgame/shared/abis";
+import { gameAddress } from "@castgame/shared/constants";
 
 export default createConfig({
   networks: {
@@ -12,8 +13,8 @@ export default createConfig({
   },
   contracts: {
     Game: {
-      abi: GameAbi,
-      address: "0x9B2839f3a1B76F00dCb23580AfDa8d93FAe334F9",
+      abi: gameAbi,
+      address: gameAddress,
       network: "baseSepolia",
       startBlock: 14372488,
     },

@@ -2,17 +2,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+// The round currently being played. Written by scripts/src/game.ts,
+// read by the web app and the frame.
 model Round {
   id              Int      @id
   title           String

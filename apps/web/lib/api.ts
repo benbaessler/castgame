@@ -1,7 +1,9 @@
 import { client } from "./viem";
 import { formatEther } from "viem";
+import { queryIndexer } from "@castgame/shared/indexer";
 
-const apiEndpoint = "https://api-production-c6c20.up.railway.app/";
+// GraphQL endpoint of the indexer (apps/api)
+const apiEndpoint = process.env.NEXT_PUBLIC_API_URL!;
 
 export const getCasts = async (castsHashes: string[]) => {
 	if (castsHashes.length === 0) return [];
@@ -43,19 +45,7 @@ export const getCastData = async (castsHashes: string[]) => {
 	return await res.json();
 };
 
-export const queryData = async (query: string) => {
-	const res = await fetch(apiEndpoint, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Accept: "application/json",
-		},
-		body: JSON.stringify({ query }),
-	});
-	const { data } = await res.json();
-
-	return data;
-};
+export const queryData = (query: string) => queryIndexer(apiEndpoint, query);
 
 interface Details {
 	rewardPool: string;

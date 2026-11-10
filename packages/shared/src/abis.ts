@@ -1,4 +1,4 @@
-export const GameAbi = [
+export const gameAbi = [
 	{
 		type: "constructor",
 		inputs: [

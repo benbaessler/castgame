@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { init, fetchQuery } from '@airstack/airstack-react';
+import { formatCastScores } from '@castgame/shared/indexer';
 
 if (!process.env.AIRSTACK_API_KEY) {
   throw new Error("Please set AIRSTACK_API_KEY in your environment variables");
@@ -27,19 +28,7 @@ export async function POST(request: Request) {
       }
     }`);
     
-    const output = query.data.FarcasterCasts.Cast.map((cast: any) => {
-      const score =
-        cast.castValue.formattedValue > 10
-          ? Math.ceil(cast.castValue.formattedValue)
-          : cast.castValue.formattedValue.toFixed(2);
-  
-      return {
-        hash: cast.hash,
-        score,
-      };
-    });
-
-    return NextResponse.json(output);
+    return NextResponse.json(formatCastScores(query.data.FarcasterCasts.Cast));
   } catch (error) {
     console.error('Error fetching casts:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

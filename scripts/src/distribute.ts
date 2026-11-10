@@ -1,7 +1,8 @@
 import { formatEther } from "viem";
 import { prisma } from "./utils/prisma";
 import { client } from "./utils/viem";
-import { handleScoresData, queryData } from "./utils/api";
+import { queryData } from "./utils/api";
+import { formatCastScores } from "@castgame/shared/indexer";
 import { fetchQuery, init } from "@airstack/node";
 import { NeynarAPIClient } from "@neynar/nodejs-sdk";
 
@@ -49,7 +50,7 @@ const main = async () => {
       }
     }
   }`);
-	const scoresData = handleScoresData(scoresQuery.data.FarcasterCasts.Cast);
+	const scoresData = formatCastScores(scoresQuery.data.FarcasterCasts.Cast);
 	const winnersData = scoresData
 		.sort((a: any, b: any) => Number(b.score) - Number(a.score))
 		.slice(0, 3);

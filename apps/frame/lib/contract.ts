@@ -6,10 +6,11 @@ import {
   encodePacked,
   zeroAddress,
 } from "viem";
-import { gameAbi } from "./abis.js";
+import { gameAbi } from "@castgame/shared/abis";
+import { gameAddress } from "@castgame/shared/constants";
 import { privateKeyToAccount } from "viem/accounts";
 import { config } from "dotenv";
-import { chain, gameAddress } from "./constants.js";
+import { chain } from "./constants.js";
 config();
 
 const deployer = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);

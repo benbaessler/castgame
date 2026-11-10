@@ -1,14 +1,9 @@
 import { ponder } from "@/generated";
 import { getFeeAmount } from "./viem";
-import { getActiveTier, getPrice, getSellPrice, neynar } from "./api";
-import pinataSDK from "@pinata/sdk";
-import { formatEther, parseEther, zeroAddress } from "viem";
+import { neynar } from "./api";
+import { getActiveTier, getPrice, getSellPrice } from "@castgame/shared/pricing";
+import { zeroAddress } from "viem";
 require("dotenv").config();
-
-const pinata = new pinataSDK({
-	pinataApiKey: process.env.PINATA_API_KEY,
-	pinataSecretApiKey: process.env.PINATA_API_SECRET,
-});
 
 ponder.on("Game:GameStarted", async ({ event, context }) => {
 	const { GameStats } = context.db;
@@ -29,11 +24,8 @@ ponder.on("Game:Purchased", async ({ event, context }) => {
 		"hash"
 	);
 
-	const [tokenExists, feeAmount, activeTier] = await Promise.all([
-		Ticket.findUnique({ id: event.args.castHash }),
-		getFeeAmount(event.args.price),
-		getActiveTier(cast),
-	]);
+	const feeAmount = await getFeeAmount(event.args.price);
+	const activeTier = BigInt(getActiveTier(cast.author));
 
 	let reqs = [
 		GameStats.findUnique({ id: 0n }) as any,
@@ -43,7 +35,7 @@ ponder.on("Game:Purchased", async ({ event, context }) => {
 			create: {
 				supply: event.args.amount,
 				holders: [event.args.senderFid],
-				activeTier: activeTier as bigint,
+				activeTier,
 				buyPrice: getPrice(activeTier, event.args.amount),
 				sellPrice: getSellPrice(activeTier, event.args.amount, 1n),
 				castCreated: cast.timestamp,
@@ -138,23 +130,6 @@ ponder.on("Game:Purchased", async ({ event, context }) => {
 		);
 	}
 
-	// upload metadata
-	// if (!tokenExists) {
-	// 	const metadata = await pinata.pinJSONToIPFS({
-	// 		name: `Cast by ${cast.author.username} (demo)`,
-	// 		description: `A (test) cast.game ticket purchased via Farcaster. - https://warpcast.com/${cast.author.username}/${cast.hash}`,
-	// 		image: `https://client.warpcast.com/v2/cast-image?castHash=${cast.hash}`,
-	// 		properties: {
-	// 			cast_hash: cast.hash,
-	// 			author_fid: cast.author.fid.toString(),
-	// 		},
-	// 	});
-
-	// 	reqs.push(setTokenURI(event.args.castHash, metadata.IpfsHash));
-	// 	console.log(
-	// 		`Metadata: set ${metadata.IpfsHash} for castHash: ${event.args.castHash}`
-	// 	);
-	// }
 
 	// update game stats (users)
 	const [gameStats] = await Promise.all(reqs);

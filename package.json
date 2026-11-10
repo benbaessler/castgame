@@ -1,5 +1,12 @@
 {
   "name": "castgame",
   "private": true,
-  "workspaces": ["apps/*", "packages/*", "scripts"]
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "scripts"
+  ],
+  "scripts": {
+    "db:generate": "bun run --cwd packages/shared db:generate"
+  }
 }

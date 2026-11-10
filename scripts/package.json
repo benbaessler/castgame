@@ -1,7 +1,11 @@
 {
   "name": "@castgame/scripts",
-  "module": "index.ts",
+  "private": true,
   "type": "module",
+  "scripts": {
+    "round:create": "bun src/game.ts",
+    "payout:preview": "bun src/distribute.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -10,11 +14,13 @@
   },
   "dependencies": {
     "@airstack/node": "^0.0.7",
-    "@duneanalytics/client-sdk": "^0.1.5",
+    "@castgame/shared": "workspace:*",
     "@neynar/nodejs-sdk": "^1.46.1",
     "@prisma/client": "^5.18.0",
     "prisma": "^5.18.0",
-    "ts-node": "^10.9.2",
     "viem": "^2.19.9"
+  },
+  "prisma": {
+    "schema": "../packages/shared/prisma/schema.prisma"
   }
 }

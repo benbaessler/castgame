@@ -8,13 +8,13 @@ import {
 	blockExplorer,
 	chainId,
 	formatNumber,
-	gameAddress,
 	ipfsGateway,
 	logoIpfsHash,
 	timeUntil,
 	tokenSymbol,
 } from "../lib/constants.js";
-import { gameAbi } from "../lib/abis.js";
+import { gameAbi } from "@castgame/shared/abis";
+import { gameAddress } from "@castgame/shared/constants";
 import { parseEther, zeroAddress, encodeAbiParameters } from "viem";
 import { generateSignature } from "../lib/contract.js";
 import {
@@ -26,7 +26,11 @@ import {
 import { getCast, getChannel } from "../lib/neynar.js";
 import { Box, Image } from "./ui.js";
 import { prisma } from "../lib/prisma.js";
-import { getActiveTier, getBuyPrice, getSellPrice } from "../lib/price.js";
+import {
+	getActiveTier,
+	getBuyPrice,
+	getSellPrice,
+} from "@castgame/shared/pricing";
 // Uncomment to use Edge Runtime.
 // export const config = {
 //   runtime: 'edge',

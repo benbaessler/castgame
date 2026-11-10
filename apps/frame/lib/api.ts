@@ -1,15 +1,12 @@
-import {
-	apiEndpoint,
-	gameAddress,
-	getSCVQuery,
-	priceTiers,
-} from "./constants.js";
+import { apiEndpoint, getSCVQuery } from "./constants.js";
+import { gameAddress } from "@castgame/shared/constants";
+import { queryIndexer } from "@castgame/shared/indexer";
+import { getActiveTier, priceTiers } from "@castgame/shared/pricing";
 import { Cast } from "@neynar/nodejs-sdk/build/neynar-api/v2/index.js";
 import { getUser } from "./neynar.js";
 import { formatEther } from "viem";
 import { client } from "./contract.js";
 import { init, fetchQuery } from "@airstack/node";
-import { getActiveTier } from "./price.js";
 init(process.env.AIRSTACK_API_KEY!);
 
 interface TicketData {
@@ -23,19 +20,7 @@ interface TicketData {
 	activeTier: number;
 }
 
-export const queryData = async (query: string) => {
-	const res = await fetch(apiEndpoint, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Accept: "application/json",
-		},
-		body: JSON.stringify({ query }),
-	});
-	const { data } = await res.json();
-
-	return data;
-};
+export const queryData = (query: string) => queryIndexer(apiEndpoint, query);
 
 export const getDetails = async () => {
 	const [rewardPool, txsRes, statsRes] = await Promise.all([
