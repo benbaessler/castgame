@@ -1,66 +1,22 @@
-## Foundry
+# contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Foundry project with the on-chain part of the game.
 
-Foundry consists of:
+- [`src/Game.sol`](src/Game.sol): buying and selling tickets against
+  owner-signed price quotes, fee distribution, and the owner-only `payout` once
+  a round is over. Ticket balances are plain mappings keyed by cast hash.
+- [`src/Tickets.sol`](src/Tickets.sol): an ERC-1155 version of tickets from an
+  earlier design. `Game` no longer uses it; it is kept with its tests for
+  reference.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+The contracts are unaudited. The deployment the apps point at is on the Base
+Sepolia testnet.
 
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+git submodule update --init --recursive
+cp .env.sample .env   # PRIVATE_KEY_DEV can be any throwaway key
+forge build
+forge test
 ```
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Deploy with `forge script script/Game.s.sol --rpc-url <rpc> --broadcast`.
